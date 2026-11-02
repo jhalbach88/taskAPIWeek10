@@ -15,18 +15,39 @@ tags:
 paths:
   /tasks:
     get:
-      summary: List all tasks
+      summary: List all tasks with completion filter
       tags:
         - Tasks
+      parameters:
+        - name: completed
+          in: query
+          required: false
+          description: Filters tasks by completion status
+          schema:
+            type: boolean
       responses:
         '200':
-          description: OK
+          description: Tasks retrieved successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid completed query parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  error:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: string
+
     post:
       summary: Create a new task
       tags:
